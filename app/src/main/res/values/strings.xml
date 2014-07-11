@@ -3,6 +3,7 @@
 
     <string name="app_name">VotingInformationProject</string>
     <string name="hello_world">Hello world!</string>
+    <string name="test_button">Click me!</string>
     <string name="action_settings">Settings</string>
 
 </resources>

@@ -87,16 +87,9 @@ public class ContestsActivity extends Activity {
         testText.setText("Fetching data...");
 
         Context myContext = view.getContext();
-
-        // TODO: check that API key exists
         String api_key = myContext.getString(R.string.google_api_browser_key);
         String apiUrl = "https://www.googleapis.com/civicinfo/v2/elections?key=" + api_key;
         new QueryElections().execute(apiUrl);
-    }
-
-    private class ElectionQueryResponse {
-        String kind;
-        List<Election> elections;
     }
 
     public class QueryElections extends AsyncTask<String, Void, String> {

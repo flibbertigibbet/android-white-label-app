@@ -17,6 +17,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    sourceSets {
+        main {
+            java.srcDirs = ['src/main/java', 'src/main/java/com/votinginfoproject/VotingInformationProject/models', 'src/main/java/com/votinginfoproject/VotingInformationProject/views', 'src/main/java/com/votinginfoproject/VotingInformationProject/activities']
+        }
+    }
 }
 
 repositories {

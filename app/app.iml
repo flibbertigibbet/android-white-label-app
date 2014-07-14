@@ -47,6 +47,9 @@
       <sourceFolder url="file://$MODULE_DIR$/src/main/aidl" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/assets" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/java/com/votinginfoproject/VotingInformationProject/models" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/java/com/votinginfoproject/VotingInformationProject/views" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/java/com/votinginfoproject/VotingInformationProject/activities" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/jni" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/rs" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/androidTest/res" type="java-test-resource" />

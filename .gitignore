@@ -18,3 +18,5 @@
 bin/
 gen/
 
+# API key file
+api_keys.xml

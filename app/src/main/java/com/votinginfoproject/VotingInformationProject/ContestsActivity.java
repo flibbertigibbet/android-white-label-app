@@ -89,93 +89,27 @@ public class ContestsActivity extends Activity {
         Context myContext = view.getContext();
         String api_key = myContext.getString(R.string.google_api_browser_key);
         String apiUrl = "https://www.googleapis.com/civicinfo/v2/elections?key=" + api_key;
-        new QueryElections().execute(apiUrl);
+
+        System.out.println("Creating callback listener...");
+        CivicInfoApiQuery.CallBackListener myListener = new myCallback();
+
+        System.out.println("Going to query...");
+        new CivicInfoApiQuery<ElectionQueryResponse>(myContext, ElectionQueryResponse.class, myListener).execute(apiUrl);
+
     }
 
-    public class QueryElections extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected String doInBackground(String... urls) {
-            URL url = null;
-            String line;
-            StringBuilder gotStuff = new StringBuilder();
-            ElectionQueryResponse qryResult = null;
-            String show = "";
-
-            try {
-                url = new URL(urls[0]);
-                HttpURLConnection myConnection = (HttpURLConnection) url.openConnection();
-                InputStream in = myConnection.getInputStream();
-                BufferedReader ir = new BufferedReader(new InputStreamReader(in));
-                Gson gson = new GsonBuilder().create();
-
-                qryResult = gson.fromJson(ir, ElectionQueryResponse.class);
-                System.out.println(qryResult);
-
-                System.out.println(qryResult.kind);
-                System.out.println(qryResult.elections);
-
-                show = "Elections:\n\n";
-                for (Election el : qryResult.elections) {
-                    show += el.id + ": " + el.name + "\n" + el.electionDay + "\n\n";
-                }
-
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-                return "oops1";
-            } catch (IOException e) {
-                e.printStackTrace();
-                return "oops2";
+    public class myCallback implements CivicInfoApiQuery.CallBackListener {
+        public void callback(Object obj) {
+            System.out.println("Made it to callback!");
+            ElectionQueryResponse qryResult = (ElectionQueryResponse) obj;
+            String show = "Elections:\n\n";
+            for (Election el : qryResult.elections) {
+                show += el.id + ": " + el.name + "\n" + el.electionDay + "\n\n";
             }
-
-            return show;
-        }
-
-        protected void onPostExecute(String show) {
-            System.out.println("GOT API RESULTS:");
-            System.out.println(show);
+            System.out.println("Going to show text.");
             testText.setText(show);
         }
     }
-
-    /*
-    private class TestShowStuff extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected String doInBackground(String... urls) {
-            URL url = null;
-            String line;
-            StringBuilder gotStuff = new StringBuilder();
-            String show = "";
-
-            try {
-                url = new URL(urls[0]);
-                HttpURLConnection myConnection = (HttpURLConnection) url.openConnection();
-                InputStream in = myConnection.getInputStream();
-                BufferedReader ir = new BufferedReader(new InputStreamReader(in));
-                //InputStreamReader ir = new InputStreamReader(in);
-
-                while ((line = ir.readLine()) != null) {
-                    gotStuff.append(line);
-                    System.out.println(line);
-                }
-
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-                return "oops1";
-            } catch (IOException e) {
-                e.printStackTrace();
-                return "oops2";
-            }
-
-            return gotStuff.toString();
-        }
-
-        protected void onPostExecute(String show) {
-            testText.setText(show);
-        }
-    }
-    */
 
 }
 

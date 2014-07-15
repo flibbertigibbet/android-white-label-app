@@ -82,7 +82,7 @@ public class ContestsActivity extends Activity {
         }
     }
 
-    public void testDoStuff(View view) {
+    public void testElectionQuery(View view) {
         testText = (TextView) findViewById(R.id.testTextBox);
         testText.setText("Fetching data...");
 
@@ -91,14 +91,30 @@ public class ContestsActivity extends Activity {
         String apiUrl = "https://www.googleapis.com/civicinfo/v2/elections?key=" + api_key;
 
         System.out.println("Creating callback listener...");
-        CivicInfoApiQuery.CallBackListener myListener = new myCallback();
+        CivicInfoApiQuery.CallBackListener myListener = new electionsCallback();
 
         System.out.println("Going to query...");
         new CivicInfoApiQuery<ElectionQueryResponse>(myContext, ElectionQueryResponse.class, myListener).execute(apiUrl);
 
     }
 
-    public class myCallback implements CivicInfoApiQuery.CallBackListener {
+    public void testVoterInfoQuery(View view) {
+        testText = (TextView) findViewById(R.id.testTextBox);
+        testText.setText("Fetching data...");
+
+        Context myContext = view.getContext();
+        String api_key = myContext.getString(R.string.google_api_browser_key);
+        String apiUrl = "https://www.googleapis.com/civicinfo/v2/voterinfo?address=2121%20I%20St%20NWWashington,%20DC&electionId=4043&key=" + api_key;
+
+        System.out.println("Creating callback listener...");
+        CivicInfoApiQuery.CallBackListener voterInfoListener = new voterInfoCallback();
+
+        System.out.println("Going to query...");
+        new CivicInfoApiQuery<VoterInfo>(myContext, VoterInfo.class, voterInfoListener).execute(apiUrl);
+
+    }
+
+    public class electionsCallback implements CivicInfoApiQuery.CallBackListener {
         public void callback(Object obj) {
             System.out.println("Made it to callback!");
             ElectionQueryResponse qryResult = (ElectionQueryResponse) obj;
@@ -106,6 +122,26 @@ public class ContestsActivity extends Activity {
             for (Election el : qryResult.elections) {
                 show += el.id + ": " + el.name + "\n" + el.electionDay + "\n\n";
             }
+            System.out.println("Going to show text.");
+            testText.setText(show);
+        }
+    }
+
+    public class voterInfoCallback implements CivicInfoApiQuery.CallBackListener {
+        public void callback(Object obj) {
+            System.out.println("Made it to callback!");
+            VoterInfo qryResult = (VoterInfo) obj;
+
+            System.out.println(qryResult.kind);
+            System.out.println(qryResult);
+            Election el = qryResult.election;
+            String show = "Election:\n" + el.id + ": " + el.name + "\n" + el.electionDay + "\n\n";
+
+            State state = qryResult.state.get(0);
+            show += "State: " + state.name + "\n";
+            show += "Election admin: " + state.electionAdministrationBody.name + "\n\n";
+            show += "Sources:\n" + state.sources.get(0).name;
+
             System.out.println("Going to show text.");
             testText.setText(show);
         }

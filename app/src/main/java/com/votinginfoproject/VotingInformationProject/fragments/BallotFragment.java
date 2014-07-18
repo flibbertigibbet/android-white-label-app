@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -32,7 +33,6 @@ import java.util.List;
 public class BallotFragment extends Fragment {
 
     VoterInfo voterInfo;
-    Election election;
 
     private OnInteractionListener mListener;
 
@@ -62,19 +62,25 @@ public class BallotFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_ballot, container, false);
         Activity myActivity = this.getActivity();
+
+        // election label
         TextView election_name_label = (TextView)rootView.findViewById(R.id.election_name);
         TextView election_date_label = (TextView)rootView.findViewById(R.id.election_date);
-        election_name_label.setText(election.name);
-        election_date_label.setText(election.electionDay);
+        election_name_label.setText(voterInfo.election.name);
+        election_date_label.setText(voterInfo.election.electionDay);
 
-        ArrayList<String> contestInfo = new ArrayList<>(voterInfo.contests.size());
-        for (Contest contest : voterInfo.contests) {
-            contestInfo.add(contest.type + '\n' + contest.office);
-        }
-
-        ArrayAdapter adapter = new ArrayAdapter<String>(myActivity, android.R.layout.simple_list_item_1, contestInfo);
+        // populate contest list, using toString override on Contest class
+        ArrayList contestInfo = (ArrayList) voterInfo.contests;
+        ArrayAdapter adapter = new ArrayAdapter<String>(myActivity, android.R.layout.simple_selectable_list_item, contestInfo);
         ListView contestList = (ListView)rootView.findViewById(R.id.list);
         contestList.setAdapter(adapter);
+        contestList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // TODO: launch contest view here
+                Log.d("ContestsList", "clicked: " + voterInfo.contests.get(position).office);
+            }
+        });
 
         return rootView;
     }
@@ -88,8 +94,7 @@ public class BallotFragment extends Fragment {
             // get election info
             VIPApp app = (VIPApp) getActivity().getApplicationContext();
             voterInfo = app.getVoterInfo();
-            election = voterInfo.election;
-            Log.d("BallotFragment", "Got election: " + election.name);
+            Log.d("BallotFragment", "Got election: " + voterInfo.election.name);
 
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()

@@ -3,11 +3,14 @@ package com.votinginfoproject.VotingInformationProject.fragments;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.votinginfoproject.VotingInformationProject.R;
+import com.votinginfoproject.VotingInformationProject.models.VIPApp;
+import com.votinginfoproject.VotingInformationProject.models.VoterInfo;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,10 +22,8 @@ import com.votinginfoproject.VotingInformationProject.R;
  *
  */
 public class BallotFragment extends Fragment {
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "ballot_num";
 
-    private int ballotId;
+    VoterInfo voterInfo;
 
     private OnInteractionListener mListener;
 
@@ -30,13 +31,11 @@ public class BallotFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param ballot_num Ballot number
      * @return A new instance of fragment BallotFragment.
      */
-    public static BallotFragment newInstance(int ballot_num) {
+    public static BallotFragment newInstance() {
         BallotFragment fragment = new BallotFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_PARAM1, ballot_num);
         fragment.setArguments(args);
         return fragment;
     }
@@ -47,10 +46,6 @@ public class BallotFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ballotId= -1;
-        if (getArguments() != null) {
-            ballotId = getArguments().getInt(ARG_PARAM1, 1);
-        }
     }
 
     @Override
@@ -58,7 +53,13 @@ public class BallotFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_ballot, container, false);
         TextView label = (TextView)rootView.findViewById(R.id.section_label);
-        label.setText("Ballot ID: " + ballotId);
+
+        // should always have an election to show if we got here, but check anyways
+        if (voterInfo != null && voterInfo.election != null) {
+            label.setText(voterInfo.election.name);
+        } else {
+            Log.e("BallotFragment", "No election found to show!");
+        }
         return rootView;
     }
 
@@ -67,6 +68,13 @@ public class BallotFragment extends Fragment {
         super.onAttach(activity);
         try {
             mListener = (OnInteractionListener) activity;
+
+            // get voter info
+            VIPApp app = (VIPApp) getActivity().getApplicationContext();
+            voterInfo = app.getVoterInfo();
+            Log.d("BallotFragment", "Got voter info: " + voterInfo.kind);
+            Log.d("BallotFragment", "Got election: " + voterInfo.election.name);
+
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");

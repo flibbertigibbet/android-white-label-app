@@ -10,6 +10,7 @@ import android.view.View;
 
 import com.votinginfoproject.VotingInformationProject.R;
 import com.votinginfoproject.VotingInformationProject.fragments.HomeFragment;
+import com.votinginfoproject.VotingInformationProject.models.VIPApp;
 import com.votinginfoproject.VotingInformationProject.models.Election;
 import com.votinginfoproject.VotingInformationProject.models.VoterInfo;
 import com.votinginfoproject.VotingInformationProject.models.State;
@@ -48,6 +49,10 @@ public class HomeActivity extends FragmentActivity implements HomeFragment.OnInt
     }
 
     public void searchedAddress(VoterInfo voterInfo) {
+
+        VIPApp app = (VIPApp) getApplicationContext();
+        app.setVoterInfo(voterInfo);
+
         // TODO: Pass this VoterInfo object to the VIPTabBarActivity Intent
         //       For now, just print to debug log
         Election el = voterInfo.election;

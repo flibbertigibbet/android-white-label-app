@@ -8,9 +8,9 @@ import java.util.List;
  * https://developers.google.com/civic-information/docs/v1/representatives/representativeInfoByAddress
  */
 public class RepresentativeInfoByAddressResponse {
-    public static String kind;
-    public static Address normalizedInput;
-    public static Dictionary<String, Division> divisions;
-    public static List<Office> offices;
-    public static List<Official> officials;
+    public String kind;
+    public Address normalizedInput;
+    public Dictionary<String, Division> divisions;
+    public List<Office> offices;
+    public List<Official> officials;
 }

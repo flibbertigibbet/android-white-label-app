@@ -10,7 +10,7 @@ import java.util.List;
  * https://developers.google.com/civic-information/docs/v1/representatives/representativeInfoByDivision
  */
 public class RepresentativeInfo {
-    public Dictionary<String, Division> divisions;
-    public List<Office> offices;
-    public List<Official> officials;
+    public static Dictionary<String, Division> divisions;
+    public static List<Office> offices;
+    public static List<Official> officials;
 }

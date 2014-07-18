@@ -7,6 +7,6 @@ import java.util.List;
  * https://developers.google.com/civic-information/docs/v1/divisions/search
  */
 public class DivisionsSearchResponse {
-    public String kind;
-    public List<Division> results;
+    public static String kind;
+    public static List<Division> results;
 }

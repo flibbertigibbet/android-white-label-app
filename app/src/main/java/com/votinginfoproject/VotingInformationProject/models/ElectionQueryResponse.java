@@ -7,6 +7,6 @@ import java.util.List;
  * https://developers.google.com/civic-information/docs/v1/elections/electionQuery
  */
 public class ElectionQueryResponse {
-    public String kind;
-    public List<Election> elections;
+    public static String kind;
+    public static List<Election> elections;
 }

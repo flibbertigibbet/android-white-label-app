@@ -8,12 +8,12 @@ import java.util.List;
  * https://developers.google.com/civic-information/docs/v1/voterinfo/voterInfoQuery
  */
 public class VoterInfo {
-    public String kind;
-    public Election election;
-    public List<Election> otherElections;
-    public Address normalizedInput;
-    public List<PollingLocation> pollingLocations;
-    public List<PollingLocation> earlyVoteSites;
-    public List<Contest> contests;
-    public List<State> state;
+    public static String kind;
+    public static Election election;
+    public static List<Election> otherElections;
+    public static Address normalizedInput;
+    public static List<PollingLocation> pollingLocations;
+    public static List<PollingLocation> earlyVoteSites;
+    public static List<Contest> contests;
+    public static List<State> state;
 }

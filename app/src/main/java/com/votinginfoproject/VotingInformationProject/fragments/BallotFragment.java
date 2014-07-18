@@ -3,14 +3,22 @@ package com.votinginfoproject.VotingInformationProject.fragments;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import com.votinginfoproject.VotingInformationProject.R;
+import com.votinginfoproject.VotingInformationProject.models.Contest;
+import com.votinginfoproject.VotingInformationProject.models.Election;
 import com.votinginfoproject.VotingInformationProject.models.VIPApp;
 import com.votinginfoproject.VotingInformationProject.models.VoterInfo;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,6 +32,7 @@ import com.votinginfoproject.VotingInformationProject.models.VoterInfo;
 public class BallotFragment extends Fragment {
 
     VoterInfo voterInfo;
+    Election election;
 
     private OnInteractionListener mListener;
 
@@ -52,14 +61,21 @@ public class BallotFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_ballot, container, false);
-        TextView label = (TextView)rootView.findViewById(R.id.section_label);
+        Activity myActivity = this.getActivity();
+        TextView election_name_label = (TextView)rootView.findViewById(R.id.election_name);
+        TextView election_date_label = (TextView)rootView.findViewById(R.id.election_date);
+        election_name_label.setText(election.name);
+        election_date_label.setText(election.electionDay);
 
-        // should always have an election to show if we got here, but check anyways
-        if (voterInfo != null && voterInfo.election != null) {
-            label.setText(voterInfo.election.name);
-        } else {
-            Log.e("BallotFragment", "No election found to show!");
+        ArrayList<String> contestInfo = new ArrayList<>(voterInfo.contests.size());
+        for (Contest contest : voterInfo.contests) {
+            contestInfo.add(contest.type + '\n' + contest.office);
         }
+
+        ArrayAdapter adapter = new ArrayAdapter<String>(myActivity, android.R.layout.simple_list_item_1, contestInfo);
+        ListView contestList = (ListView)rootView.findViewById(R.id.list);
+        contestList.setAdapter(adapter);
+
         return rootView;
     }
 
@@ -69,11 +85,11 @@ public class BallotFragment extends Fragment {
         try {
             mListener = (OnInteractionListener) activity;
 
-            // get voter info
+            // get election info
             VIPApp app = (VIPApp) getActivity().getApplicationContext();
             voterInfo = app.getVoterInfo();
-            Log.d("BallotFragment", "Got voter info: " + voterInfo.kind);
-            Log.d("BallotFragment", "Got election: " + voterInfo.election.name);
+            election = voterInfo.election;
+            Log.d("BallotFragment", "Got election: " + election.name);
 
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()

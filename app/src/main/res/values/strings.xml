@@ -27,4 +27,6 @@
 
     <!-- Election View Strings -->
     <string name="ballot_contests_list_header">Contests</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

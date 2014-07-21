@@ -3,19 +3,25 @@ package com.votinginfoproject.VotingInformationProject.activities;
 import java.util.ArrayList;
 
 import android.app.ActionBar;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.ListFragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+
 import com.votinginfoproject.VotingInformationProject.R;
 import com.votinginfoproject.VotingInformationProject.fragments.BallotFragment;
+import com.votinginfoproject.VotingInformationProject.fragments.BallotWrapperFragment;
+import com.votinginfoproject.VotingInformationProject.fragments.ContestFragment;
 
 public class VIPTabBarActivity extends FragmentActivity implements BallotFragment.OnInteractionListener {
 
@@ -23,8 +29,26 @@ public class VIPTabBarActivity extends FragmentActivity implements BallotFragmen
      * The {@link ViewPager} that will host the section contents.
      */
     ViewPager mViewPager;
-
     TabsAdapter mTabsAdapter;
+
+
+    public void showCandiateTab(int position) {
+        Log.d("VIPTabBarActivity", "Going to show candidate tab...");
+        //FragmentManager ballotManager = ((BallotWrapperFragment)mTabsAdapter.firstTabFragment).getChildFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        //fragmentTransaction.remove(mTabsAdapter.firstTabFragment);
+        //fragmentTransaction.hide(mTabsAdapter.firstTabFragment);
+        //fragmentTransaction.hide(mTabsAdapter.firstTabFragment.getParentFragment());
+        Fragment contestFragment = ContestFragment.newInstance(position);
+       // fragmentTransaction.replace(R.id.ballot_wrapper, contestFragment);
+        fragmentTransaction.replace(R.id.ballot_viewgroup, contestFragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+
+        mTabsAdapter.firstTabFragment = contestFragment;
+        mTabsAdapter.notifyDataSetChanged();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,15 +115,37 @@ public class VIPTabBarActivity extends FragmentActivity implements BallotFragmen
      * care of switch to the correct paged in the ViewPager whenever the selected
      * tab changes.
      *
-     * NOTE: This class is lifted directly from the ViewPager class docs:
+     * NOTE: This class is mostly lifted directly from the ViewPager class docs:
      *       http://developer.android.com/reference/android/support/v4/view/ViewPager.html
      */
-    public static class TabsAdapter extends FragmentPagerAdapter
+    public static class TabsAdapter extends FragmentStatePagerAdapter
             implements ActionBar.TabListener, ViewPager.OnPageChangeListener {
         private final Context mContext;
         private final ActionBar mActionBar;
         private final ViewPager mViewPager;
         private final ArrayList<TabInfo> mTabs = new ArrayList<TabInfo>();
+        private final FragmentManager mFragmentManager;
+        protected Fragment firstTabFragment;
+
+        @Override
+        public void onTabSelected(ActionBar.Tab tab, android.app.FragmentTransaction ft) {
+            Object tag = tab.getTag();
+            for (int i=0; i<mTabs.size(); i++) {
+                if (mTabs.get(i) == tag) {
+                    mViewPager.setCurrentItem(i);
+                }
+            }
+        }
+
+        @Override
+        public void onTabUnselected(ActionBar.Tab tab, android.app.FragmentTransaction ft) {
+
+        }
+
+        @Override
+        public void onTabReselected(ActionBar.Tab tab, android.app.FragmentTransaction ft) {
+
+        }
 
         static final class TabInfo {
             private final Class<?> clss;
@@ -118,6 +164,7 @@ public class VIPTabBarActivity extends FragmentActivity implements BallotFragmen
             mViewPager = pager;
             mViewPager.setAdapter(this);
             mViewPager.setOnPageChangeListener(this);
+            mFragmentManager = activity.getSupportFragmentManager();
         }
 
         public void addTab(ActionBar.Tab tab, Class<?> clss, Bundle args) {
@@ -141,13 +188,26 @@ public class VIPTabBarActivity extends FragmentActivity implements BallotFragmen
 
             switch (position) {
                 case 1: {
-                    return BallotFragment.newInstance();
+                    firstTabFragment = mFragmentManager.findFragmentById(R.layout.ballot_wrapper);
+                    if (firstTabFragment == null) {
+                        firstTabFragment = new BallotWrapperFragment(); //BallotFragment.newInstance();
+                    }
+                    return firstTabFragment;
                 }
                 default: {
                     return BallotFragment.newInstance();
                 }
             }
 
+        }
+
+        @Override
+        public int getItemPosition(Object object) {
+            // http://stackoverflow.com/questions/7723964/replace-fragment-inside-a-viewpager/18612147#18612147
+            if (object instanceof ContestFragment && firstTabFragment instanceof BallotWrapperFragment) {
+                return POSITION_NONE;
+            }
+            return POSITION_UNCHANGED;
         }
 
         @Override
@@ -162,26 +222,6 @@ public class VIPTabBarActivity extends FragmentActivity implements BallotFragmen
 
         @Override
         public void onPageScrollStateChanged(int state) {
-
-        }
-
-        @Override
-        public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
-            Object tag = tab.getTag();
-            for (int i=0; i<mTabs.size(); i++) {
-                if (mTabs.get(i) == tag) {
-                    mViewPager.setCurrentItem(i);
-                }
-            }
-        }
-
-        @Override
-        public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
-
-        }
-
-        @Override
-        public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
 
         }
     }

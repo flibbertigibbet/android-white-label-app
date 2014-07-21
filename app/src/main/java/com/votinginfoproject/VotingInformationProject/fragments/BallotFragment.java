@@ -1,8 +1,11 @@
 package com.votinginfoproject.VotingInformationProject.fragments;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.votinginfoproject.VotingInformationProject.R;
+import com.votinginfoproject.VotingInformationProject.activities.VIPTabBarActivity;
 import com.votinginfoproject.VotingInformationProject.models.VIPApp;
 import com.votinginfoproject.VotingInformationProject.models.VoterInfo;
 
@@ -31,8 +35,9 @@ import java.util.Date;
  */
 public class BallotFragment extends Fragment {
 
-    VoterInfo voterInfo;
+    private static final String TAG = "BallotFragment";
 
+    VoterInfo voterInfo;
     private OnInteractionListener mListener;
 
     /**
@@ -60,7 +65,7 @@ public class BallotFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_ballot, container, false);
-        Activity myActivity = this.getActivity();
+        final VIPTabBarActivity myActivity = (VIPTabBarActivity)this.getActivity();
         SimpleDateFormat election_date_api_format = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat election_date_display_format = new SimpleDateFormat("MMMM d, yyyy");
 
@@ -85,8 +90,9 @@ public class BallotFragment extends Fragment {
         contestList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // TODO: launch contest view here
                 Log.d("ContestsList", "clicked: " + voterInfo.contests.get(position).office);
+
+                myActivity.showCandiateTab(position);
             }
         });
 

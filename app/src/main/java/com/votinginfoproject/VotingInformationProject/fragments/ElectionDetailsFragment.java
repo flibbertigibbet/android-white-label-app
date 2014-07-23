@@ -27,11 +27,7 @@ import java.net.URI;
 
 public class ElectionDetailsFragment extends Fragment {
 
-    private OnInteractionListener mListener;
-    private ViewGroup mContainer;
     private Activity mActivity;
-
-    //private OnFragmentInteractionListener mListener;
 
     /**
      * Use this factory method to create a new instance of
@@ -67,9 +63,10 @@ public class ElectionDetailsFragment extends Fragment {
 
         mActivity = getActivity();
 
-        // set click handlers for URLs
-        setUrlClickHandler(R.id.details_state_election_info_url);
-        setUrlClickHandler(R.id.details_local_election_info_url);
+        // TODO: we might still want to open links this way, if we want to stay in the app,
+        // instead of using android:autoLink
+        //setUrlClickHandler(R.id.details_state_election_info_url);
+        //setUrlClickHandler(R.id.details_local_election_info_url);
 
         setContents();
     }
@@ -125,7 +122,9 @@ public class ElectionDetailsFragment extends Fragment {
 
                 // set state admin body table values
                 setTextView(R.id.details_state_election_info_url, R.id.details_state_election_info_url_row, stateAdmin.electionInfoUrl);
-
+                setTextView(R.id.details_state_registration_url, R.id.details_state_registration_url_row, stateAdmin.electionRegistrationUrl);
+                setTextView(R.id.details_state_registration_confirmation_url, R.id.details_state_registration_confirmation_url_row, stateAdmin.electionRegistrationConfirmationUrl);
+                setTextView(R.id.details_state_absentee_url, R.id.details_state_absentee_url_row, stateAdmin.absenteeVotingInfoUrl);
                 ////////////////////////////////////
             } else {
                 TableLayout stateTable = (TableLayout) mActivity.findViewById(R.id.details_state_admin_body_table);
@@ -143,6 +142,9 @@ public class ElectionDetailsFragment extends Fragment {
 
                 // set local admin body table values
                 setTextView(R.id.details_local_election_info_url, R.id.details_local_election_info_url_row, localAdmin.electionInfoUrl);
+                setTextView(R.id.details_local_registration_url, R.id.details_state_registration_url_row, localAdmin.electionRegistrationUrl);
+                setTextView(R.id.details_local_registration_confirmation_url, R.id.details_local_registration_confirmation_url_row, localAdmin.electionRegistrationConfirmationUrl);
+                setTextView(R.id.details_local_absentee_url, R.id.details_state_absentee_url_row, localAdmin.absenteeVotingInfoUrl);
 
                 ////////////////////////////////////
             } else {
@@ -177,34 +179,9 @@ public class ElectionDetailsFragment extends Fragment {
         }
     }
 
-    /*
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mListener = (OnFragmentInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-    */
-
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
-    }
-
-    public interface OnInteractionListener {
-        // TODO: Add methods here as necessary
     }
 
 }

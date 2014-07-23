@@ -5,6 +5,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
+import android.text.method.MovementMethod;
+import android.text.style.URLSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +32,7 @@ import java.net.URI;
 public class ElectionDetailsFragment extends Fragment {
 
     private Activity mActivity;
+    private MovementMethod mLinkMovementMethod;
 
     /**
      * Use this factory method to create a new instance of
@@ -60,37 +65,9 @@ public class ElectionDetailsFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Log.d("ElectionDetailsFragment", "In onActivityCreated");
-
         mActivity = getActivity();
-
-        // TODO: we might still want to open links this way, if we want to stay in the app,
-        // instead of using android:autoLink
-        //setUrlClickHandler(R.id.details_state_election_info_url);
-        //setUrlClickHandler(R.id.details_local_election_info_url);
-
+        mLinkMovementMethod = LinkMovementMethod.getInstance();
         setContents();
-    }
-
-    /**
-     * Helper function to set click handler for TextViews containing URLs.
-     * Will launch a browser with the URL in the text view.
-     *
-     * @param textViewId R id of the TextView containing a URL as its text
-     */
-    private void setUrlClickHandler(int textViewId) {
-        View textView = mActivity.findViewById(textViewId);
-        textView.setOnClickListener(view -> {
-            try {
-                // could use webview instead to open link within app
-                Intent browseIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(((TextView)view).getText().toString()));
-                browseIntent.addCategory(Intent.CATEGORY_BROWSABLE);
-
-                startActivity(browseIntent);
-            } catch (Exception ex) {
-                Log.e("ElectionDetailsFragment", "Failed to open clicked URL");
-                ex.printStackTrace();
-            }
-        });
     }
 
     /** Helper function to populate the view labels.
@@ -141,12 +118,14 @@ public class ElectionDetailsFragment extends Fragment {
                 local_name.setText(localAdmin.name);
 
                 // set local admin body table values
-                setTextView(R.id.details_local_election_info_url, R.id.details_local_election_info_url_row, localAdmin.electionInfoUrl);
-                setTextView(R.id.details_local_registration_url, R.id.details_state_registration_url_row, localAdmin.electionRegistrationUrl);
-                setTextView(R.id.details_local_registration_confirmation_url, R.id.details_local_registration_confirmation_url_row, localAdmin.electionRegistrationConfirmationUrl);
-                setTextView(R.id.details_local_absentee_url, R.id.details_state_absentee_url_row, localAdmin.absenteeVotingInfoUrl);
 
-                ////////////////////////////////////
+                // set fields that are links
+                setLink(R.id.details_local_election_info_url_label, R.id.details_local_election_info_url_row, localAdmin.electionInfoUrl);
+                setLink(R.id.details_local_registration_url_label, R.id.details_state_registration_url_row, localAdmin.electionRegistrationUrl);
+                setLink(R.id.details_local_registration_confirmation_url_label, R.id.details_local_registration_confirmation_url_row, localAdmin.electionRegistrationConfirmationUrl);
+                setLink(R.id.details_local_absentee_url_label, R.id.details_state_absentee_url_row, localAdmin.absenteeVotingInfoUrl);
+
+
             } else {
                 TableLayout localTable = (TableLayout) mActivity.findViewById(R.id.details_local_admin_body_table);
                 localTable.setVisibility(View.GONE);
@@ -159,6 +138,25 @@ public class ElectionDetailsFragment extends Fragment {
             ex.printStackTrace();
         }
 
+    }
+
+    /**
+     * Helper function to turn labels into links for fields that are URLs.
+     *
+     * @param labelId R id of the label to link-ify
+     * @param rowViewId R id of the label's row (to hide it if there's no link found)
+     * @param val String containing the URL
+     */
+    private void setLink(int labelId, int rowViewId, String val) {
+        TextView textView = (TextView) mActivity.findViewById(labelId);
+        if (val != null && !val.isEmpty()) {
+            String label = textView.getText().toString();
+            textView.setText(Html.fromHtml("<a href=\"" + val + "\">" + label + "</a>"));
+            textView.setMovementMethod(mLinkMovementMethod);
+        } else {
+            TableRow tableRow = (TableRow) mActivity.findViewById(rowViewId);
+            tableRow.setVisibility(View.GONE);
+        }
     }
 
     /**

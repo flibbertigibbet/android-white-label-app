@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -65,6 +66,8 @@ public class ElectionDetailsFragment extends Fragment {
         setSectionClickListener(R.id.details_state_links_section_header, R.id.details_state_links_section);
         setSectionClickListener(R.id.details_local_links_section_header, R.id.details_local_links_section);
         setContents();
+
+
     }
 
     /**
@@ -76,11 +79,14 @@ public class ElectionDetailsFragment extends Fragment {
     private void setSectionClickListener(int sectionHeaderId, int sectionId) {
         mActivity.findViewById(sectionHeaderId).setOnClickListener(view -> {
             Log.d("ElectionDetailsFragment", "State links button clicked");
-            TableLayout linksTbl = (TableLayout)mActivity.findViewById(sectionId);
+            Button btn = (Button)view;
+            TableLayout linksTbl = (TableLayout) mActivity.findViewById(sectionId);
             if (linksTbl.getVisibility() == View.GONE) {
                 linksTbl.setVisibility(View.VISIBLE);
+                btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_find_previous_holo_dark, 0);
             } else {
                 linksTbl.setVisibility(View.GONE);
+                btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_find_next_holo_dark, 0);
             }
         });
     }

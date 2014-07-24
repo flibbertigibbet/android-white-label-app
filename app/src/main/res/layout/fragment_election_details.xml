@@ -89,6 +89,7 @@
                     <Button
                         android:id="@+id/details_state_links_section_header"
                         android:text="@string/details_links_section_header"
+                        android:drawableRight="@drawable/ic_find_next_holo_dark"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_span="2"
@@ -213,6 +214,7 @@
                     <Button
                         android:id="@+id/details_local_links_section_header"
                         android:text="@string/details_links_section_header"
+                        android:drawableRight="@drawable/ic_find_next_holo_dark"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_span="2"

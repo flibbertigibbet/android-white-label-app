@@ -38,8 +38,8 @@
     <string name="contest_candidate_list_header">Candidates</string>
 
     <!-- Election Detail Strings -->
-    <string name="details_state_administration_body_header">State Election Administration</string>
-    <string name="details_local_administration_body_header">Local Jurisdiction Administration</string>
+    <string name="details_state_administration_body_header">State Administration</string>
+    <string name="details_local_administration_body_header">Local Administration</string>
 
     <!-- Election Links Strings -->
     <string name="details_links_section_header">Election Information Websites</string>

@@ -62,4 +62,20 @@ public class ElectionAdministrationBody {
         builder.deleteCharAt(builder.lastIndexOf("\n"));
         return builder.toString();
     }
+
+    public String getCorrespondenceAddress() {
+        if (correspondenceAddress == null) {
+            return "";
+        } else {
+            return correspondenceAddress.toString();
+        }
+    }
+
+    public String getPhysicalAddress() {
+        if (physicalAddress == null) {
+            return "";
+        } else {
+            return physicalAddress.toString();
+        }
+    }
 }

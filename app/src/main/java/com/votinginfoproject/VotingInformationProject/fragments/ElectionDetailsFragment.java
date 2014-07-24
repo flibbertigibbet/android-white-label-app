@@ -31,13 +31,21 @@ public class ElectionDetailsFragment extends Fragment {
     private MovementMethod mLinkMovementMethod;
 
     // collapsible section headers, and their sub-sections
-    static final List<List<Integer>> detailSections = new ArrayList<List<Integer>>(6) {{
+    static final List<List<Integer>> detailSections = new ArrayList<List<Integer>>(14) {{
+        add(Arrays.asList(R.id.details_state_admin_body_section_label, R.id.details_state_admin_body_table));
+        add(Arrays.asList(R.id.details_local_admin_body_section_label, R.id.details_local_admin_body_table));
         add(Arrays.asList(R.id.details_state_links_section_header, R.id.details_state_links_section));
         add(Arrays.asList(R.id.details_local_links_section_header, R.id.details_local_links_section));
         add(Arrays.asList(R.id.details_state_voter_services_section_header, R.id.details_state_voter_services_section));
         add(Arrays.asList(R.id.details_local_voter_services_section_header, R.id.details_local_voter_services_section));
         add(Arrays.asList(R.id.details_state_hours_of_operation_section_header, R.id.details_state_hours_of_operation_section));
         add(Arrays.asList(R.id.details_local_hours_of_operation_section_header, R.id.details_local_hours_of_operation_section));
+        add(Arrays.asList(R.id.details_state_correspondence_address_section_header, R.id.details_state_correspondence_address_section));
+        add(Arrays.asList(R.id.details_local_correspondence_address_section_header, R.id.details_local_correspondence_address_section));
+        add(Arrays.asList(R.id.details_state_physical_address_section_header, R.id.details_state_physical_address_section));
+        add(Arrays.asList(R.id.details_local_physical_address_section_header, R.id.details_local_physical_address_section));
+        add(Arrays.asList(R.id.details_state_election_officials_section_header, R.id.details_state_election_officials_section));
+        add(Arrays.asList(R.id.details_local_election_officials_section_header, R.id.details_local_election_officials_section));
     }};
 
     /**
@@ -142,11 +150,11 @@ public class ElectionDetailsFragment extends Fragment {
                 setLink(R.id.details_state_election_rules_url_label, R.id.details_state_election_rules_url_row, stateAdmin.electionRulesUrl);
 
                 // set non-link field values
-                //setTextView(R.id.details_state_voter_services, R.id.details_state_voter_services_section_header, stateAdmin.getVoterServices());
-                // TODO: remove this.  Used address for testing, as there's no voter services on the test election.
-                setTextView(R.id.details_state_voter_services, R.id.details_state_voter_services_section_header, stateAdmin.physicalAddress.toString());
-
+                setTextView(R.id.details_state_voter_services, R.id.details_state_voter_services_section_header, stateAdmin.getVoterServices());
                 setTextView(R.id.details_state_hours_of_operation, R.id.details_state_hours_of_operation_section_header, stateAdmin.hoursOfOperation);
+                setTextView(R.id.details_state_correspondence_address, R.id.details_state_correspondence_address_section_header, stateAdmin.getCorrespondenceAddress());
+                setTextView(R.id.details_state_physical_address, R.id.details_state_physical_address_section_header, stateAdmin.getPhysicalAddress());
+                setTextView(R.id.details_state_election_officials, R.id.details_state_election_officials_section_header, stateAdmin.getElectionOfficials());
 
             } else {
                 View stateTable = mActivity.findViewById(R.id.details_state_admin_body_table);
@@ -174,11 +182,11 @@ public class ElectionDetailsFragment extends Fragment {
                 setLink(R.id.details_local_election_rules_url_label, R.id.details_local_election_rules_url_row, localAdmin.electionRulesUrl);
 
                 // set non-link field values
-                //setTextView(R.id.details_local_voter_services, R.id.details_local_voter_services_section_header, localAdmin.getVoterServices());
-                // TODO: remove this.  Used address for testing, as there's no voter services on the test election.
-                setTextView(R.id.details_local_voter_services, R.id.details_local_voter_services_section_header, localAdmin.physicalAddress.toString());
-
+                setTextView(R.id.details_local_voter_services, R.id.details_local_voter_services_section_header, localAdmin.getVoterServices());
                 setTextView(R.id.details_local_hours_of_operation, R.id.details_local_hours_of_operation_section_header, localAdmin.hoursOfOperation);
+                setTextView(R.id.details_local_correspondence_address, R.id.details_local_correspondence_address_section_header, localAdmin.getCorrespondenceAddress());
+                setTextView(R.id.details_local_physical_address, R.id.details_local_physical_address_section_header, localAdmin.getPhysicalAddress());
+                setTextView(R.id.details_local_election_officials, R.id.details_local_election_officials_section_header, localAdmin.getElectionOfficials());
 
 
             } else {

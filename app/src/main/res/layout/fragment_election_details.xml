@@ -45,7 +45,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textAppearance="?android:attr/textAppearanceLarge"
                 android:id="@+id/details_state_admin_body_section_label"
                 android:layout_below="@+id/details_election_subtitle"
                 android:layout_alignParentLeft="true"
@@ -53,7 +53,8 @@
                 android:layout_alignRight="@+id/details_election_subtitle"
                 android:layout_alignEnd="@+id/details_election_subtitle"
                 android:paddingTop="@dimen/activity_vertical_margin"
-                android:text="@string/details_state_administration_body_header" />
+                android:text="@string/details_state_administration_body_header"
+                android:textStyle="bold" />
 
             <TableLayout
                 android:layout_width="fill_parent"
@@ -64,9 +65,11 @@
                 android:stretchColumns="1"
                 android:id="@+id/details_state_admin_body_table">
 
+
                 <TableRow
                     android:layout_width="fill_parent"
-                    android:id="@+id/details_state_admin_body_name_row">
+                    android:id="@+id/details_state_admin_body_name_row"
+                    android:layout_height="wrap_content">
 
                     <TextView
                         android:padding="3dip"
@@ -74,92 +77,92 @@
                         android:id="@+id/details_state_admin_body_name"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:layout_span="2" />
+                        android:layout_span="2"
+                        android:textStyle="bold" />
                 </TableRow>
 
                 <TableRow
                     android:layout_width="fill_parent"
-                    android:id="@+id/details_state_election_info_url_row">
+                    android:id="@+id/details_state_links_section_header_row"
+                    android:layout_height="wrap_content">
 
-                    <TextView
-                        android:padding="3dip"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="@string/details_election_info_url_label"
-                        android:id="@+id/details_state_election_info_url_label" />
-
-                    <TextView
-                        android:padding="3dip"
-                        android:gravity="right"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
+                    <Button
+                        android:id="@+id/details_state_links_section_header"
+                        android:text="@string/details_links_section_header"
+                        android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/details_state_election_info_url"
-                        android:clickable="true"
-                        android:textIsSelectable="true"
-                        android:autoLink="web" />
+                        android:layout_span="2"
+                        android:clickable="true" />
                 </TableRow>
 
-                <TableRow
+                <TableLayout
                     android:layout_width="fill_parent"
-                    android:id="@+id/details_state_registration_url_row">
+                    android:layout_height="wrap_content"
+                    android:id="@+id/details_state_links_section"
+                    android:visibility="gone">
 
-                    <TextView
-                        android:padding="3dip"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="@string/details_voter_registration_url_label"
-                        android:id="@+id/details_state_registration_url_label" />
+                    <TableRow
+                        android:layout_width="fill_parent"
+                        android:id="@+id/details_state_election_info_url_row"
+                        android:layout_height="wrap_content">
 
-                    <TextView
-                        android:padding="3dip"
-                        android:gravity="right"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        <TextView
+                            android:padding="10dip"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:text="@string/details_election_info_url_label"
+                            android:id="@+id/details_state_election_info_url_label"
+                            android:clickable="true"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="fill_parent"
+                        android:id="@+id/details_state_registration_url_row"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:padding="10dip"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:text="@string/details_voter_registration_url_label"
+                            android:id="@+id/details_state_registration_url_label"
+                            android:autoText="false"
+                            android:clickable="true"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="fill_parent"
+                        android:id="@+id/details_state_registration_confirmation_url_row"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:padding="10dip"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:text="@string/details_voter_registration_confirmation_url_label"
+                            android:id="@+id/details_state_registration_confirmation_url_label"
+                            android:autoText="false"
+                            android:clickable="true"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/details_state_registration_url"
-                        android:clickable="true"
-                        android:textIsSelectable="true"
-                        android:autoLink="web" />
-                </TableRow>
+                        android:id="@+id/details_state_absentee_url_row">
 
-                <TableRow
-                    android:layout_width="fill_parent"
-                    android:id="@+id/details_state_registration_confirmation_url_row">
-
-                    <TextView
-                        android:padding="3dip"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="@string/details_voter_registration_confirmation_url_label"
-                        android:id="@+id/details_state_registration_confirmation_url_label" />
-
-                    <TextView
-                        android:padding="3dip"
-                        android:gravity="right"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/details_state_registration_confirmation_url"
-                        android:clickable="true"
-                        android:textIsSelectable="true"
-                        android:autoLink="web" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="fill_parent"
-                    android:id="@+id/details_state_absentee_url_row">
-
-                    <TextView
-                        android:padding="3dip"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="@string/details_absentee_voting_url_label"
-                        android:id="@+id/details_state_absentee_url_label" />
-
-                    <TextView
-                        android:padding="3dip"
-                        android:gravity="right"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/details_state_absentee_url"
-                        android:clickable="true"
-                        android:textIsSelectable="true"
-                        android:autoLink="web" />
-                </TableRow>
+                        <TextView
+                            android:padding="10dip"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:text="@string/details_absentee_voting_url_label"
+                            android:id="@+id/details_state_absentee_url_label"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:clickable="true" />
+                    </TableRow>
+                </TableLayout>
             </TableLayout>
             <!-- end State admin body section -->
 
@@ -167,7 +170,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textAppearance="?android:attr/textAppearanceLarge"
                 android:id="@+id/details_local_admin_body_section_label"
                 android:layout_below="@+id/details_state_admin_body_table"
                 android:layout_alignParentLeft="true"
@@ -175,7 +178,8 @@
                 android:layout_alignRight="@+id/details_election_subtitle"
                 android:layout_alignEnd="@+id/details_election_subtitle"
                 android:paddingTop="@dimen/activity_vertical_margin"
-                android:text="@string/details_local_administration_body_header" />
+                android:text="@string/details_local_administration_body_header"
+                android:textStyle="bold" />
 
             <TableLayout
                 android:layout_width="fill_parent"
@@ -197,95 +201,124 @@
                         android:id="@+id/details_local_admin_body_name"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:layout_span="2" />
+                        android:layout_span="2"
+                        android:textStyle="bold" />
                 </TableRow>
 
                 <TableRow
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/details_local_election_info_url_row">
+                    android:id="@+id/details_local_links_section_header_row"
+                    android:layout_height="wrap_content">
 
-                    <TextView
-                        android:padding="3dip"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="@string/details_election_info_url_label"
-                        android:id="@+id/details_local_election_info_url_label" />
-
-                    <TextView
-                        android:padding="3dip"
-                        android:gravity="right"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:id="@+id/details_local_election_info_url"
-                        android:clickable="true"
-                        android:textIsSelectable="true"
-                        android:autoLink="web" />
+                    <Button
+                        android:id="@+id/details_local_links_section_header"
+                        android:text="@string/details_links_section_header"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_span="2"
+                        android:clickable="true" />
                 </TableRow>
 
-                <TableRow
+                <TableLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/details_local_registration_url_row">
+                    android:id="@+id/details_local_links_section"
+                    android:visibility="gone">
 
-                    <TextView
-                        android:padding="3dip"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="@string/details_voter_registration_url_label"
-                        android:id="@+id/details_local_registration_url_label" />
+                    <TableRow
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/details_local_election_info_url_row">
 
-                    <TextView
-                        android:padding="3dip"
-                        android:gravity="right"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:id="@+id/details_local_registration_url"
-                        android:clickable="true"
-                        android:textIsSelectable="true"
-                        android:autoLink="web" />
-                </TableRow>
+                        <TextView
+                            android:padding="10dip"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:text="@string/details_election_info_url_label"
+                            android:id="@+id/details_local_election_info_url_label"
+                            android:autoText="false"
+                            android:clickable="true" />
 
-                <TableRow
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/details_local_registration_confirmation_url_row">
+                        <TextView
+                            android:padding="3dip"
+                            android:gravity="right"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:id="@+id/details_local_election_info_url"
+                            android:clickable="true"
+                            android:textIsSelectable="true"
+                            android:autoLink="web" />
+                    </TableRow>
 
-                    <TextView
-                        android:padding="3dip"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="@string/details_voter_registration_confirmation_url_label"
-                        android:id="@+id/details_local_registration_confirmation_url_label" />
+                    <TableRow
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/details_local_registration_url_row">
 
-                    <TextView
-                        android:padding="3dip"
-                        android:gravity="right"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:id="@+id/details_local_registration_confirmation_url"
-                        android:clickable="true"
-                        android:textIsSelectable="true"
-                        android:autoLink="web" />
-                </TableRow>
+                        <TextView
+                            android:padding="10dip"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:text="@string/details_voter_registration_url_label"
+                            android:id="@+id/details_local_registration_url_label"
+                            android:autoText="false"
+                            android:clickable="true" />
 
-                <TableRow
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/details_local_absentee_url_row">
+                        <TextView
+                            android:padding="3dip"
+                            android:gravity="right"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:id="@+id/details_local_registration_url"
+                            android:clickable="true"
+                            android:textIsSelectable="true"
+                            android:autoLink="web" />
+                    </TableRow>
 
-                    <TextView
-                        android:padding="3dip"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="@string/details_absentee_voting_url_label"
-                        android:id="@+id/details_local_absentee_url_label" />
+                    <TableRow
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/details_local_registration_confirmation_url_row">
 
-                    <TextView
-                        android:padding="3dip"
-                        android:gravity="right"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:id="@+id/details_local_absentee_url"
-                        android:clickable="true"
-                        android:textIsSelectable="true"
-                        android:autoLink="web" />
-                </TableRow>
+                        <TextView
+                            android:padding="10dip"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:text="@string/details_voter_registration_confirmation_url_label"
+                            android:id="@+id/details_local_registration_confirmation_url_label"
+                            android:autoText="false"
+                            android:clickable="true" />
+
+                        <TextView
+                            android:padding="3dip"
+                            android:gravity="right"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:id="@+id/details_local_registration_confirmation_url"
+                            android:clickable="true"
+                            android:textIsSelectable="true"
+                            android:autoLink="web" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/details_local_absentee_url_row">
+
+                        <TextView
+                            android:padding="10dip"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:text="@string/details_absentee_voting_url_label"
+                            android:id="@+id/details_local_absentee_url_label"
+                            android:autoText="false"
+                            android:clickable="true" />
+
+                        <TextView
+                            android:padding="3dip"
+                            android:gravity="right"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:id="@+id/details_local_absentee_url"
+                            android:clickable="true"
+                            android:textIsSelectable="true"
+                            android:autoLink="web" />
+                    </TableRow>
+                </TableLayout>
             </TableLayout>
             <!-- end local admin body section -->
-
         </RelativeLayout>
     </ScrollView>
 

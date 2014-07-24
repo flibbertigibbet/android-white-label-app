@@ -1,14 +1,11 @@
 package com.votinginfoproject.VotingInformationProject.fragments;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.text.method.MovementMethod;
-import android.text.style.URLSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,10 +20,6 @@ import com.votinginfoproject.VotingInformationProject.models.Election;
 import com.votinginfoproject.VotingInformationProject.models.ElectionAdministrationBody;
 import com.votinginfoproject.VotingInformationProject.models.State;
 import com.votinginfoproject.VotingInformationProject.models.VoterInfo;
-
-import org.w3c.dom.Text;
-
-import java.net.URI;
 
 
 public class ElectionDetailsFragment extends Fragment {
@@ -67,7 +60,29 @@ public class ElectionDetailsFragment extends Fragment {
         Log.d("ElectionDetailsFragment", "In onActivityCreated");
         mActivity = getActivity();
         mLinkMovementMethod = LinkMovementMethod.getInstance();
+
+        // set expandable section header click listeners
+        setSectionClickListener(R.id.details_state_links_section_header, R.id.details_state_links_section);
+        setSectionClickListener(R.id.details_local_links_section_header, R.id.details_local_links_section);
         setContents();
+    }
+
+    /**
+     * Helper function to set click listeners for expandable section headers.
+     *
+     * @param sectionHeaderId R id of section header (button)
+     * @param sectionId R id of sub-section to show/hide on click
+     */
+    private void setSectionClickListener(int sectionHeaderId, int sectionId) {
+        mActivity.findViewById(sectionHeaderId).setOnClickListener(view -> {
+            Log.d("ElectionDetailsFragment", "State links button clicked");
+            TableLayout linksTbl = (TableLayout)mActivity.findViewById(sectionId);
+            if (linksTbl.getVisibility() == View.GONE) {
+                linksTbl.setVisibility(View.VISIBLE);
+            } else {
+                linksTbl.setVisibility(View.GONE);
+            }
+        });
     }
 
     /** Helper function to populate the view labels.
@@ -98,10 +113,13 @@ public class ElectionDetailsFragment extends Fragment {
                 state_name.setText(stateAdmin.name);
 
                 // set state admin body table values
-                setTextView(R.id.details_state_election_info_url, R.id.details_state_election_info_url_row, stateAdmin.electionInfoUrl);
-                setTextView(R.id.details_state_registration_url, R.id.details_state_registration_url_row, stateAdmin.electionRegistrationUrl);
-                setTextView(R.id.details_state_registration_confirmation_url, R.id.details_state_registration_confirmation_url_row, stateAdmin.electionRegistrationConfirmationUrl);
-                setTextView(R.id.details_state_absentee_url, R.id.details_state_absentee_url_row, stateAdmin.absenteeVotingInfoUrl);
+
+                // set fields that are links
+                setLink(R.id.details_state_election_info_url_label, R.id.details_state_election_info_url_row, stateAdmin.electionInfoUrl);
+                setLink(R.id.details_state_registration_url_label, R.id.details_state_registration_url_row, stateAdmin.electionRegistrationUrl);
+                setLink(R.id.details_state_registration_confirmation_url_label, R.id.details_state_registration_confirmation_url_row, stateAdmin.electionRegistrationConfirmationUrl);
+                setLink(R.id.details_state_absentee_url_label, R.id.details_state_absentee_url_row, stateAdmin.absenteeVotingInfoUrl);
+
                 ////////////////////////////////////
             } else {
                 TableLayout stateTable = (TableLayout) mActivity.findViewById(R.id.details_state_admin_body_table);

@@ -11,8 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.votinginfoproject.VotingInformationProject.R;
@@ -22,11 +20,25 @@ import com.votinginfoproject.VotingInformationProject.models.ElectionAdministrat
 import com.votinginfoproject.VotingInformationProject.models.State;
 import com.votinginfoproject.VotingInformationProject.models.VoterInfo;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 
 public class ElectionDetailsFragment extends Fragment {
 
     private Activity mActivity;
     private MovementMethod mLinkMovementMethod;
+
+    // collapsible section headers, and their sub-sections
+    static final List<List<Integer>> detailSections = new ArrayList<List<Integer>>(6) {{
+        add(Arrays.asList(R.id.details_state_links_section_header, R.id.details_state_links_section));
+        add(Arrays.asList(R.id.details_local_links_section_header, R.id.details_local_links_section));
+        add(Arrays.asList(R.id.details_state_voter_services_section_header, R.id.details_state_voter_services_section));
+        add(Arrays.asList(R.id.details_local_voter_services_section_header, R.id.details_local_voter_services_section));
+        add(Arrays.asList(R.id.details_state_hours_of_operation_section_header, R.id.details_state_hours_of_operation_section));
+        add(Arrays.asList(R.id.details_local_hours_of_operation_section_header, R.id.details_local_hours_of_operation_section));
+    }};
 
     /**
      * Use this factory method to create a new instance of
@@ -63,15 +75,12 @@ public class ElectionDetailsFragment extends Fragment {
         mLinkMovementMethod = LinkMovementMethod.getInstance();
 
         // set expandable section header click listeners
-        setSectionClickListener(R.id.details_state_links_section_header, R.id.details_state_links_section);
-        setSectionClickListener(R.id.details_local_links_section_header, R.id.details_local_links_section);
-        setSectionClickListener(R.id.details_state_voter_services_section_header, R.id.details_state_voter_services_section);
-        setSectionClickListener(R.id.details_local_voter_services_section_header, R.id.details_local_voter_services_section);
+        for (List<Integer>detail : detailSections) {
+            setSectionClickListener(detail.get(0), detail.get(1));
+        }
 
         // populate fields with API results
         setContents();
-
-
     }
 
     /**
@@ -83,12 +92,12 @@ public class ElectionDetailsFragment extends Fragment {
     private void setSectionClickListener(int sectionHeaderId, int sectionId) {
         mActivity.findViewById(sectionHeaderId).setOnClickListener(view -> {
             Button btn = (Button)view;
-            TableLayout linksTbl = (TableLayout) mActivity.findViewById(sectionId);
-            if (linksTbl.getVisibility() == View.GONE) {
-                linksTbl.setVisibility(View.VISIBLE);
+            View section = mActivity.findViewById(sectionId);
+            if (section.getVisibility() == View.GONE) {
+                section.setVisibility(View.VISIBLE);
                 btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_find_previous_holo_dark, 0);
             } else {
-                linksTbl.setVisibility(View.GONE);
+                section.setVisibility(View.GONE);
                 btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_find_next_holo_dark, 0);
             }
         });
@@ -137,11 +146,12 @@ public class ElectionDetailsFragment extends Fragment {
                 // TODO: remove this.  Used address for testing, as there's no voter services on the test election.
                 setTextView(R.id.details_state_voter_services, R.id.details_state_voter_services_section_header, stateAdmin.physicalAddress.toString());
 
+                setTextView(R.id.details_state_hours_of_operation, R.id.details_state_hours_of_operation_section_header, stateAdmin.hoursOfOperation);
 
             } else {
-                TableLayout stateTable = (TableLayout) mActivity.findViewById(R.id.details_state_admin_body_table);
+                View stateTable = mActivity.findViewById(R.id.details_state_admin_body_table);
                 stateTable.setVisibility(View.GONE);
-                TextView stateTableHeader = (TextView) mActivity.findViewById(R.id.details_state_admin_body_section_label);
+                View stateTableHeader = mActivity.findViewById(R.id.details_state_admin_body_section_label);
                 stateTableHeader.setVisibility(View.GONE);
             }
 
@@ -164,16 +174,17 @@ public class ElectionDetailsFragment extends Fragment {
                 setLink(R.id.details_local_election_rules_url_label, R.id.details_local_election_rules_url_row, localAdmin.electionRulesUrl);
 
                 // set non-link field values
-                // set non-link field values
                 //setTextView(R.id.details_local_voter_services, R.id.details_local_voter_services_section_header, localAdmin.getVoterServices());
                 // TODO: remove this.  Used address for testing, as there's no voter services on the test election.
                 setTextView(R.id.details_local_voter_services, R.id.details_local_voter_services_section_header, localAdmin.physicalAddress.toString());
 
+                setTextView(R.id.details_local_hours_of_operation, R.id.details_local_hours_of_operation_section_header, localAdmin.hoursOfOperation);
+
 
             } else {
-                TableLayout localTable = (TableLayout) mActivity.findViewById(R.id.details_local_admin_body_table);
+                View localTable = mActivity.findViewById(R.id.details_local_admin_body_table);
                 localTable.setVisibility(View.GONE);
-                TextView localTableHeader = (TextView) mActivity.findViewById(R.id.details_local_admin_body_section_label);
+                View localTableHeader = mActivity.findViewById(R.id.details_local_admin_body_section_label);
                 localTableHeader.setVisibility(View.GONE);
             }
 

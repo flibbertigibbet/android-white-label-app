@@ -125,7 +125,9 @@ public class ElectionDetailsFragment extends Fragment {
                 setLink(R.id.details_state_registration_url_label, R.id.details_state_registration_url_row, stateAdmin.electionRegistrationUrl);
                 setLink(R.id.details_state_registration_confirmation_url_label, R.id.details_state_registration_confirmation_url_row, stateAdmin.electionRegistrationConfirmationUrl);
                 setLink(R.id.details_state_absentee_url_label, R.id.details_state_absentee_url_row, stateAdmin.absenteeVotingInfoUrl);
-
+                setLink(R.id.details_state_location_finder_url_label, R.id.details_state_location_finder_url_row, stateAdmin.votingLocationFinderUrl);
+                setLink(R.id.details_state_ballot_info_url_label, R.id.details_state_ballot_info_url_row, stateAdmin.ballotInfoUrl);
+                setLink(R.id.details_state_election_rules_url_label, R.id.details_state_election_rules_url_row, stateAdmin.electionRulesUrl);
                 ////////////////////////////////////
             } else {
                 TableLayout stateTable = (TableLayout) mActivity.findViewById(R.id.details_state_admin_body_table);
@@ -148,6 +150,9 @@ public class ElectionDetailsFragment extends Fragment {
                 setLink(R.id.details_local_registration_url_label, R.id.details_state_registration_url_row, localAdmin.electionRegistrationUrl);
                 setLink(R.id.details_local_registration_confirmation_url_label, R.id.details_local_registration_confirmation_url_row, localAdmin.electionRegistrationConfirmationUrl);
                 setLink(R.id.details_local_absentee_url_label, R.id.details_state_absentee_url_row, localAdmin.absenteeVotingInfoUrl);
+                setLink(R.id.details_local_location_finder_url_label, R.id.details_local_location_finder_url_row, localAdmin.votingLocationFinderUrl);
+                setLink(R.id.details_local_ballot_info_url_label, R.id.details_local_ballot_info_url_row, localAdmin.ballotInfoUrl);
+                setLink(R.id.details_local_election_rules_url_label, R.id.details_local_election_rules_url_row, localAdmin.electionRulesUrl);
 
 
             } else {

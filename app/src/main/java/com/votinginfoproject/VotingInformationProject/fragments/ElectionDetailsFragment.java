@@ -65,6 +65,10 @@ public class ElectionDetailsFragment extends Fragment {
         // set expandable section header click listeners
         setSectionClickListener(R.id.details_state_links_section_header, R.id.details_state_links_section);
         setSectionClickListener(R.id.details_local_links_section_header, R.id.details_local_links_section);
+        setSectionClickListener(R.id.details_state_voter_services_section_header, R.id.details_state_voter_services_section);
+        setSectionClickListener(R.id.details_local_voter_services_section_header, R.id.details_local_voter_services_section);
+
+        // populate fields with API results
         setContents();
 
 
@@ -78,7 +82,6 @@ public class ElectionDetailsFragment extends Fragment {
      */
     private void setSectionClickListener(int sectionHeaderId, int sectionId) {
         mActivity.findViewById(sectionHeaderId).setOnClickListener(view -> {
-            Log.d("ElectionDetailsFragment", "State links button clicked");
             Button btn = (Button)view;
             TableLayout linksTbl = (TableLayout) mActivity.findViewById(sectionId);
             if (linksTbl.getVisibility() == View.GONE) {
@@ -128,7 +131,13 @@ public class ElectionDetailsFragment extends Fragment {
                 setLink(R.id.details_state_location_finder_url_label, R.id.details_state_location_finder_url_row, stateAdmin.votingLocationFinderUrl);
                 setLink(R.id.details_state_ballot_info_url_label, R.id.details_state_ballot_info_url_row, stateAdmin.ballotInfoUrl);
                 setLink(R.id.details_state_election_rules_url_label, R.id.details_state_election_rules_url_row, stateAdmin.electionRulesUrl);
-                ////////////////////////////////////
+
+                // set non-link field values
+                //setTextView(R.id.details_state_voter_services, R.id.details_state_voter_services_section_header, stateAdmin.getVoterServices());
+                // TODO: remove this.  Used address for testing, as there's no voter services on the test election.
+                setTextView(R.id.details_state_voter_services, R.id.details_state_voter_services_section_header, stateAdmin.physicalAddress.toString());
+
+
             } else {
                 TableLayout stateTable = (TableLayout) mActivity.findViewById(R.id.details_state_admin_body_table);
                 stateTable.setVisibility(View.GONE);
@@ -154,6 +163,12 @@ public class ElectionDetailsFragment extends Fragment {
                 setLink(R.id.details_local_ballot_info_url_label, R.id.details_local_ballot_info_url_row, localAdmin.ballotInfoUrl);
                 setLink(R.id.details_local_election_rules_url_label, R.id.details_local_election_rules_url_row, localAdmin.electionRulesUrl);
 
+                // set non-link field values
+                // set non-link field values
+                //setTextView(R.id.details_local_voter_services, R.id.details_local_voter_services_section_header, localAdmin.getVoterServices());
+                // TODO: remove this.  Used address for testing, as there's no voter services on the test election.
+                setTextView(R.id.details_local_voter_services, R.id.details_local_voter_services_section_header, localAdmin.physicalAddress.toString());
+
 
             } else {
                 TableLayout localTable = (TableLayout) mActivity.findViewById(R.id.details_local_admin_body_table);
@@ -173,36 +188,36 @@ public class ElectionDetailsFragment extends Fragment {
      * Helper function to turn labels into links for fields that are URLs.
      *
      * @param labelId R id of the label to link-ify
-     * @param rowViewId R id of the label's row (to hide it if there's no link found)
+     * @param containerId R id of the label's parent view (to hide it if there's no link found)
      * @param val String containing the URL
      */
-    private void setLink(int labelId, int rowViewId, String val) {
+    private void setLink(int labelId, int containerId, String val) {
         TextView textView = (TextView) mActivity.findViewById(labelId);
         if (val != null && !val.isEmpty()) {
             String label = textView.getText().toString();
             textView.setText(Html.fromHtml("<a href=\"" + val + "\">" + label + "</a>"));
             textView.setMovementMethod(mLinkMovementMethod);
         } else {
-            TableRow tableRow = (TableRow) mActivity.findViewById(rowViewId);
-            tableRow.setVisibility(View.GONE);
+            View container = mActivity.findViewById(containerId);
+            container.setVisibility(View.GONE);
         }
     }
 
     /**
-     * Helper function to set a TextView to a string, or hide the TextView's TableRow,
+     * Helper function to set a TextView to a string, or hide the TextView's containing view.
      * if the string is null or empty.
      *
      * @param textViewId R id of the TextView to set
-     * @param rowViewId R id of the TextView's TableRow, to hide if value is missing
+     * @param containerId R id of the TextView's parent view, to hide if value is missing
      * @param val String to put in the TextView
      */
-    private void setTextView(int textViewId, int rowViewId, String val) {
+    private void setTextView(int textViewId, int containerId, String val) {
         TextView textView = (TextView) mActivity.findViewById(textViewId);
         if (val != null && !val.isEmpty()) {
             textView.setText(val);
         } else {
-            TableRow tableRow = (TableRow) mActivity.findViewById(rowViewId);
-            tableRow.setVisibility(View.GONE);
+            View container = mActivity.findViewById(containerId);
+            container.setVisibility(View.GONE);
         }
     }
 

@@ -63,6 +63,10 @@ public class ElectionAdministrationBody {
         return builder.toString();
     }
 
+    /**
+     * Helper function to avoid null pointer errors when fetching address
+     * @return multi-line address string
+     */
     public String getCorrespondenceAddress() {
         if (correspondenceAddress == null) {
             return "";
@@ -71,6 +75,10 @@ public class ElectionAdministrationBody {
         }
     }
 
+    /**
+     * Helper function to avoid null pointer errors when fetching address
+     * @return multi-line address string
+     */
     public String getPhysicalAddress() {
         if (physicalAddress == null) {
             return "";

@@ -121,20 +121,14 @@ public class ElectionDetailsFragment extends Fragment {
         try {
             VoterInfo voterInfo = ((VIPTabBarActivity) mActivity).getVoterInfo();
             Election election = voterInfo.election;
-
             title.setText(election.name);
             subTitle.setText(election.getFormattedDate());
 
-            // TODO: what if election is in multiple states?
+            // TODO: what if election is in multiple states?  Find state for current address, and use that?
             State thisState = voterInfo.state.get(0);
-
-            Log.d("ElectionDetailsFragment", "Got state " + thisState.name);
-
             ElectionAdministrationBody stateAdmin = thisState.electionAdministrationBody;
 
             if (stateAdmin != null) {
-                Log.d("ElectionDetailsFragment", "Got state election admin body " + stateAdmin.name);
-
                 TextView state_name = (TextView) mActivity.findViewById(R.id.details_state_admin_body_name);
                 state_name.setText(stateAdmin.name);
 

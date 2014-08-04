@@ -16,6 +16,7 @@
 
         <ImageView
             android:id="@+id/candidate_photo"
+            android:contentDescription="@string/candidate_picture_description"
             android:src="@drawable/ic_action_person"
             android:layout_marginTop="10dip"
             android:layout_marginLeft="10dip"

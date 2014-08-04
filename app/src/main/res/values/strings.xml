@@ -58,6 +58,7 @@
     <string name="email_accessibility_description">Send email</string>
     <string name="phone_accessibility_description">Call phone number</string>
     <string name="website_accessibility_description">Visit website</string>
+    <string name="candidate_picture_description">Candidate picture</string>
 
     <!-- Election Detail Strings -->
     <string name="details_state_administration_body_header">State Administration</string>

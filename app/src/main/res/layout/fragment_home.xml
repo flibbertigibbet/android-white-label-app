@@ -2,10 +2,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.votinginfoproject.VotingInformationProject.fragments.HomeFragment">
 
     <TextView
@@ -59,20 +55,43 @@
          http://code.google.com/p/android/issues/detail?id=72902 -->
 
     <!-- android:drawableRight="@android:drawable/ic_menu_search" -->
-    <EditText
-        android:id="@+id/home_edittext_address"
-        android:inputType="textPostalAddress|textCapWords"
-        android:imeOptions="actionSearch"
-        android:hint="@string/home_textview_getting_started"
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_below="@+id/home_textview_getting_started"
+        android:id="@+id/home_edittext"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="#137bbb"
-        android:textSize="24sp"
-        android:drawableRight="@drawable/ic_menu_search_blue"
-        android:layout_below="@+id/home_textview_getting_started"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="10sp" />
+        android:layout_centerVertical="true">
+
+        <EditText
+            android:id="@+id/home_edittext_address"
+            android:layout_centerVertical="true"
+            android:inputType="textPostalAddress|textCapWords"
+            android:imeOptions="actionSearch"
+            android:hint="@string/home_textview_getting_started"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="#137bbb"
+            android:textSize="24sp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="10sp" />
+
+
+        <ImageView
+            android:id="@+id/home_edittext_search_button"
+            android:layout_alignParentRight="true"
+            android:contentDescription="@string/home_search_button_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#004071"
+            android:layout_alignTop="@+id/home_edittext_address"
+            android:layout_alignBottom="@+id/home_edittext_address"
+            android:layout_alignRight="@+id/home_edittext_address"
+            android:src="@android:drawable/ic_menu_search"
+            android:layout_centerVertical="true" />
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/home_textview_status"
@@ -83,7 +102,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginTop="10sp"
         android:background="#042a42"
-        android:layout_below="@+id/home_edittext_address"
+        android:layout_below="@+id/home_edittext"
         android:visibility="gone"
         android:gravity="center"
         android:textSize="14sp"

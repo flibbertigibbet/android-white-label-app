@@ -17,10 +17,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,11 +40,13 @@ public class HomeFragment extends Fragment {
     Button homeGoButton;
     CivicInfoApiQuery.CallBackListener voterInfoListener;
     CivicInfoApiQuery.CallBackListener voterInfoErrorListener;
+    Activity myActivity;
     Context context;
     EditText homeEditTextAddress;
     TextView homeTextViewStatus;
     Spinner homeElectionSpinner;
     View homeElectionSpinnerWrapper;
+    ImageView homeSearchButton;
 
     Election currentElection;
     String address;
@@ -67,7 +71,8 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
-        context = getActivity().getApplicationContext();
+        myActivity = getActivity();
+        context = myActivity.getApplicationContext();
 
         homeTextViewStatus = (TextView)rootView.findViewById(R.id.home_textview_status);
 
@@ -79,6 +84,8 @@ public class HomeFragment extends Fragment {
 
         homeElectionSpinner = (Spinner)rootView.findViewById(R.id.home_election_spinner);
         homeElectionSpinnerWrapper = rootView.findViewById(R.id.home_election_spinner_wrapper);
+
+        homeSearchButton = (ImageView)rootView.findViewById(R.id.home_edittext_search_button);
 
         setupViewListeners();
         setupCivicAPIListeners();
@@ -126,6 +133,21 @@ public class HomeFragment extends Fragment {
                 }
                 // Return false to close the keyboard
                 return false;
+            }
+        });
+
+        // EditText image button onSearch listener
+        homeSearchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String address = homeEditTextAddress.getText().toString();
+                setAddress(address);
+                constructVoterInfoQuery();
+
+                // hide keyboard
+                InputMethodManager imm = (InputMethodManager)myActivity.getSystemService(
+                        Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(homeEditTextAddress.getWindowToken(), 0);
             }
         });
 

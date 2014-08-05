@@ -118,9 +118,12 @@
         android:contentDescription="@string/home_go_button_accessibility_description"
         android:id="@+id/home_go_button"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40sp"
         android:layout_alignParentBottom="true"
         android:background="#004071"
+        android:textColor="#ffffff"
+        android:textAlignment="center"
+        android:textSize="24sp"
         android:textStyle="bold" />
 
 </RelativeLayout>

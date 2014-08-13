@@ -101,6 +101,19 @@ public class ElectionDetailsFragment extends Fragment {
         // should have only one state returned for addresses in the US
         State thisState = voterInfo.state.get(0);
         stateAdmin = thisState.electionAdministrationBody;
+
+        //////////////////////
+        // for testing:  show dummy state election body
+        stateAdmin = new ElectionAdministrationBody();
+        stateAdmin.hoursOfOperation = "Come on by!";
+        stateAdmin.name = "Dummy Admin Body";
+        stateAdmin.ballotInfoUrl = "https://www.google.com";
+        stateAdmin.electionInfoUrl = "http://azavea.com";
+        stateAdmin.voter_services = new ArrayList<String>(2);
+        stateAdmin.voter_services.add("Thing One");
+        stateAdmin.voter_services.add("Thing Two");
+        /////////////////////////
+
         if (thisState.local_jurisdiction != null && thisState.local_jurisdiction.electionAdministrationBody != null ) {
             localAdmin = thisState.local_jurisdiction.electionAdministrationBody;
             Log.d("ElectionDetailsFragment", "Got local election admin body " + localAdmin.name);

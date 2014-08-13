@@ -22,6 +22,8 @@ import com.votinginfoproject.VotingInformationProject.models.Contest;
 import com.votinginfoproject.VotingInformationProject.models.SocialMediaChannel;
 import com.votinginfoproject.VotingInformationProject.models.VoterInfo;
 
+import java.util.List;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -92,6 +94,17 @@ public class CandidateFragment extends Fragment {
 
             String name = (candidate.name != null) ? candidate.name : getString(R.string.candidate_no_name);
             nameView.setText(name);
+
+            ///////////////////////////////////
+            // TODO: for testing, set candidate details
+            candidate.phone = "1234567890";
+            candidate.email = "nobody@example.com";
+            candidate.candidateUrl = "http://azavea.com";
+            candidate.channels.add(new SocialMediaChannel("fb", "Facebook"));
+            candidate.channels.add(new SocialMediaChannel("yt", "YouTube"));
+            candidate.channels.add(new SocialMediaChannel("tw", "Twitter"));
+            candidate.channels.add(new SocialMediaChannel("gp", "GooglePlus"));
+            ///////////////////////////////////
 
             String party = (candidate.party != null) ? candidate.party : getString(R.string.candidate_no_party);
             partyView.setText(party);

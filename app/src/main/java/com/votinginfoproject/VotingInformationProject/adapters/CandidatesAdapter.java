@@ -1,5 +1,6 @@
 package com.votinginfoproject.VotingInformationProject.adapters;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,6 +81,11 @@ public class CandidatesAdapter extends ArrayAdapter<Candidate> {
         } else if (candidate.photoUrl != null && !candidate.photoUrl.isEmpty() && !viewHolder.alreadyQueryingForPhoto) {
             viewHolder.alreadyQueryingForPhoto = true;
             new FetchImageQuery(candidate, viewHolder.photo).execute(candidate.photoUrl);
+        } else if (!viewHolder.alreadyQueryingForPhoto) {
+            // TODO: fetching test image
+            Log.d("CandidatesAdapter", "Fetching test image in list adapter");
+            viewHolder.alreadyQueryingForPhoto = true;
+            new FetchImageQuery(candidate, viewHolder.photo).execute("http://dailytwocents.com/wp-content/uploads/2014/06/Grumpy_Cat.jpg");
         }
 
         // Return the completed view to render on screen

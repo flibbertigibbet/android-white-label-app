@@ -86,7 +86,7 @@ public class CandidateFragment extends Fragment {
         TextView partyView = (TextView)mActivity.findViewById(R.id.candidate_party);
         try {
             voterInfo = mActivity.getVoterInfo();
-            contest = voterInfo.contests.get(contestNum);
+            contest = voterInfo.getContestAt(contestNum);
             candidate = contest.candidates.get(candidateNum);
 
             String name = (candidate.name != null) ? candidate.name : getString(R.string.candidate_no_name);
@@ -145,6 +145,12 @@ public class CandidateFragment extends Fragment {
                     Log.d("CandidateFragment", "Got candidate photo URL: " + candidate.photoUrl);
                     // set image bitmap in async task
                     new FetchImageQuery(candidate, photoView).execute(candidate.photoUrl);
+                } else {
+                    // TODO: for testing, go fetch a cat pic
+                    Log.d("CandidateFragment", "Going to fetch a test image.");
+                    // http://i.imgur.com/wT62X.png
+                    // http://dailytwocents.com/wp-content/uploads/2014/06/Grumpy_Cat.jpg
+                    new FetchImageQuery(candidate, photoView).execute("http://i.imgur.com/wT62X.png");
                 }
             }
 

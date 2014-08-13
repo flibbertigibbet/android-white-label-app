@@ -2,6 +2,7 @@ package com.votinginfoproject.VotingInformationProject.activities;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import android.app.ActionBar;
 import android.content.Context;
@@ -34,6 +35,7 @@ import com.votinginfoproject.VotingInformationProject.fragments.ElectionDetailsF
 import com.votinginfoproject.VotingInformationProject.fragments.LocationsFragment;
 import com.votinginfoproject.VotingInformationProject.fragments.VIPMapFragment;
 import com.votinginfoproject.VotingInformationProject.asynctasks.GeocodeQuery;
+import com.votinginfoproject.VotingInformationProject.models.CivicApiAddress;
 import com.votinginfoproject.VotingInformationProject.models.PollingLocation;
 import com.votinginfoproject.VotingInformationProject.models.VIPApp;
 import com.votinginfoproject.VotingInformationProject.models.VIPAppContext;
@@ -199,6 +201,70 @@ public class VIPTabBarActivity extends FragmentActivity {
         // get LocationsFragment's root view
         locationsFragment = (LocationsFragment)mTabsAdapter.getItem(1);
         voterInfo = getVoterInfo();
+
+        // TOD:  for testing, add a bunch of locations
+        PollingLocation dummy1 = new PollingLocation();
+        dummy1.pollingHours = "8-5 M-F";
+        dummy1.address = new CivicApiAddress();
+        dummy1.address.line1 = "420 E 100th Ave";
+        dummy1.address.city = "Anchorage";
+        dummy1.address.state = "AK";
+        dummy1.startDate = "8/1/2014";
+        dummy1.endDate = "8/30/2014";
+        dummy1.id = "dummy1";
+        dummy1.name = "dummy one";
+        voterInfo.pollingLocations.add(dummy1);
+
+        PollingLocation dummy2 = new PollingLocation();
+        dummy2.pollingHours = "8-5 M-F";
+        dummy2.address = new CivicApiAddress();
+        dummy2.address.line1 = "4095 Elmore Rd";
+        dummy2.address.city = "Anchorage";
+        dummy2.address.state = "AK";
+        dummy2.startDate = "8/1/2014";
+        dummy2.endDate = "8/30/2014";
+        dummy2.id = "dummy2";
+        dummy2.name = "dummy two";
+        voterInfo.pollingLocations.add(dummy2);
+
+        PollingLocation dummy3 = new PollingLocation();
+        dummy3.pollingHours = "8-5 M-F\n10-2 Sat";
+        dummy3.address = new CivicApiAddress();
+        dummy3.address.line1 = "3214 Linden Dr";
+        dummy3.address.city = "Anchorage";
+        dummy3.address.state = "AK";
+        dummy3.startDate = "8/1/2014";
+        dummy3.endDate = "8/30/2014";
+        dummy3.id = "dummy3";
+        dummy3.name = "dummy three";
+        voterInfo.pollingLocations.add(dummy3);
+
+        PollingLocation dummy4 = new PollingLocation();
+        dummy4.pollingHours = "8-5 M-F\n10-2 Sat";
+        dummy4.address = new CivicApiAddress();
+        dummy4.address.line1 = "3312 W 29th Ave";
+        dummy4.address.city = "Anchorage";
+        dummy4.address.state = "AK";
+        dummy4.startDate = "8/1/2014";
+        dummy4.endDate = "8/30/2014";
+        dummy4.id = "dummy4";
+        dummy4.name = "dummy four";
+        voterInfo.earlyVoteSites = new ArrayList(1);
+        voterInfo.earlyVoteSites.add(dummy4);
+
+        PollingLocation dummy5 = new PollingLocation();
+        dummy5.pollingHours = "8-5 M-F\n10-2 Sat";
+        dummy5.address = new CivicApiAddress();
+        dummy5.address.line1 = "360 E 100th Ave";
+        dummy5.address.city = "Anchorage";
+        dummy5.address.state = "AK";
+        dummy5.startDate = "8/1/2014";
+        dummy5.endDate = "8/30/2014";
+        dummy5.id = "dummy5";
+        dummy5.name = "dummy five";
+        voterInfo.pollingLocations.add(dummy5);
+        /////////////////////////////////
+
         setAllLocations();
         setLocationIds();
 

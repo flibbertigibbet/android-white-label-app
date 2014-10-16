@@ -74,10 +74,10 @@ public class TabsAdapter extends FragmentPagerAdapter
     public Fragment getItem(int position) {
         // return the proper Fragment type given the tab
         switch (position) {
-            case 0: {
+            case 1: {
                 return BallotFragment.newInstance();
             }
-            case 1: {
+            case 0: {
                 locationsFragment = LocationsFragment.newInstance();
                 return locationsFragment;
             }

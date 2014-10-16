@@ -336,7 +336,7 @@ public class VIPTabBarActivity extends FragmentActivity implements GooglePlaySer
      */
     private void setUpGeocodings() {
         // get LocationsFragment's root view
-        locationsFragment = (LocationsFragment)mTabsAdapter.getItem(1);
+        locationsFragment = (LocationsFragment)mTabsAdapter.getItem(0);
         voterInfo = getVoterInfo();
         voterInfo.setUpLocations();
 

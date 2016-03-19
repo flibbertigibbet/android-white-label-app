@@ -7,10 +7,10 @@ dist: trusty
 
 android:
   components:
-    - build-tools-21.1.2
+    - build-tools-23.0.2
     - platform-tools
     - tools
-    - android-22
+    - android-23
     - sys-img-armeabi-v7a-android-19
     - addon-google_apis-google-19
     - extra-android-m2repository

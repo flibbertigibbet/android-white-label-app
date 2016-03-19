@@ -3,11 +3,13 @@ package com.votinginfoproject.VotingInformationProject.activities;
 import java.util.ArrayList;
 import java.util.Stack;
 
+import android.Manifest;
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.location.Location;
 import android.os.Bundle;
@@ -17,6 +19,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NavUtils;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Gravity;
@@ -27,9 +30,9 @@ import android.widget.Toast;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.location.LocationClient;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
@@ -53,8 +56,8 @@ import com.votinginfoproject.VotingInformationProject.models.VIPAppContext;
 import com.votinginfoproject.VotingInformationProject.models.VoterInfo;
 import com.votinginfoproject.VotingInformationProject.models.GoogleDirections.Bounds;
 
-public class VIPTabBarActivity extends FragmentActivity implements GooglePlayServicesClient.ConnectionCallbacks,
-        GooglePlayServicesClient.OnConnectionFailedListener, DirectionsQuery.PolylineCallBackListener, View.OnClickListener  {
+public class VIPTabBarActivity extends FragmentActivity implements DirectionsQuery.PolylineCallBackListener, View.OnClickListener,
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -72,7 +75,7 @@ public class VIPTabBarActivity extends FragmentActivity implements GooglePlaySer
     DirectionsFragment directionsFragment;
     Context context;
     boolean useMetric;
-    LocationClient mLocationClient;
+    GoogleApiClient mGoogleApiClient;
     ReverseGeocodeQuery.ReverseGeocodeCallBackListener reverseGeocodeCallBackListener;
     int selectedOriginItem = 0; // item selected from prompt for directions origin; 0 for user-entered address
 
@@ -425,7 +428,13 @@ public class VIPTabBarActivity extends FragmentActivity implements GooglePlaySer
         // start geocoding addresses when activity launches
         setUpGeocodings();
 
-        mLocationClient = new LocationClient(this, this, this);
+        if (mGoogleApiClient == null) {
+            mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    .build();
+        }
     }
 
     /**
@@ -555,12 +564,14 @@ public class VIPTabBarActivity extends FragmentActivity implements GooglePlaySer
             return null;
         }
 
-        if (!mLocationClient.isConnected()) {
+
+
+        if (!mGoogleApiClient.isConnected()) {
             // location services aren't ready yet (maybe just turned on)
             // wait for onConnected() to be called, then try again
-            if (!mLocationClient.isConnecting()) {
+            if (!mGoogleApiClient.isConnecting()) {
                 Log.d("VIPTabBarActivity", "Location client not connected; try connecting...");
-                mLocationClient.disconnect(); // call connect from disconnect
+                mGoogleApiClient.disconnect(); // call connect from disconnect
                 return null;
             } else {
                 Log.d("VIPTabBarActivity", "Location client is connecting...");
@@ -568,38 +579,42 @@ public class VIPTabBarActivity extends FragmentActivity implements GooglePlaySer
             }
         }
 
-        Location currentLocation = mLocationClient.getLastLocation();
-        if (currentLocation != null) {
-            userLocation = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
-            Log.d("HomeActivity", "Current location is: " + currentLocation.getLatitude() + "," + currentLocation.getLongitude());
-            // now go reverse-geocode to find address for current location
-            userLocationAddress = "";
-            new ReverseGeocodeQuery(reverseGeocodeCallBackListener).execute(currentLocation);
-            return new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
-        } else {
-            Log.e("HomeActivity", "Current location not found!  Are Location services enabled?");
-            userLocation = null;
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
 
-            if (showPrompt) {
-                // user has probably disabled Location services; prompt them to go turn it on
-                final AlertDialog.Builder builder = new AlertDialog.Builder(this, AlertDialog.THEME_HOLO_LIGHT);
-                builder.setMessage(R.string.tabbar_enable_location_services_prompt);
-                builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                        startActivityForResult(intent, PROMPT_ENABLE_LOCATION_SERVICES);
-                        dialog.dismiss();
-                    }
-                });
-                builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
+            Location currentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+            if (currentLocation != null) {
+                userLocation = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+                Log.d("HomeActivity", "Current location is: " + currentLocation.getLatitude() + "," + currentLocation.getLongitude());
+                // now go reverse-geocode to find address for current location
+                userLocationAddress = "";
+                new ReverseGeocodeQuery(reverseGeocodeCallBackListener).execute(currentLocation);
+                return new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+            } else {
+                Log.e("HomeActivity", "Current location not found!  Are Location services enabled?");
+                userLocation = null;
 
-                builder.create().show();
+                if (showPrompt) {
+                    // user has probably disabled Location services; prompt them to go turn it on
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(this, AlertDialog.THEME_HOLO_LIGHT);
+                    builder.setMessage(R.string.tabbar_enable_location_services_prompt);
+                    builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                            startActivityForResult(intent, PROMPT_ENABLE_LOCATION_SERVICES);
+                            dialog.dismiss();
+                        }
+                    });
+                    builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+
+                    builder.create().show();
+                }
             }
         }
 
@@ -646,9 +661,9 @@ public class VIPTabBarActivity extends FragmentActivity implements GooglePlaySer
      */
     @Override
     protected void onStart() {
-        super.onStart();
         // connect to location service
-        mLocationClient.connect();
+        mGoogleApiClient.connect();
+        super.onStart();
         //Get an Analytics tracker to report app starts, uncaught exceptions, etc.
         GoogleAnalytics.getInstance(this).reportActivityStart(this);
     }
@@ -658,7 +673,7 @@ public class VIPTabBarActivity extends FragmentActivity implements GooglePlaySer
      */
     @Override
     protected void onStop() {
-        mLocationClient.disconnect();
+        mGoogleApiClient.disconnect();
         super.onStop();
         //Stop analytics tracking
         GoogleAnalytics.getInstance(this).reportActivityStop(this);
@@ -671,9 +686,8 @@ public class VIPTabBarActivity extends FragmentActivity implements GooglePlaySer
     }
 
     @Override
-    public void onDisconnected() {
-        Log.d("VIPTabBarActivity", "Location services disconnected; try connecting.");
-        mLocationClient.connect();
+    public void onConnectionSuspended(int i) {
+        mGoogleApiClient.disconnect();
     }
 
     @Override
